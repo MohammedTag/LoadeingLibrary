@@ -1,7 +1,6 @@
 package com.mohammed.taj.loadinglib.custome_views
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,12 @@ import com.mohammed.taj.loadinglib.library_components.Caching.BitmapResponseCach
 import com.mohammed.taj.loadinglib.library_components.parsing.BitmapParser
 import com.mohammed.taj.loadinglib.library_components.requests.Request
 import com.mohammed.taj.loadinglib.library_components.requests.RequestCall
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 /**
  * Created by Mohammed Sayed Taguldeen on 28,September,2019
  * Cairo, Egypt.
@@ -30,7 +33,11 @@ class CustomeImageView : RelativeLayout {
 
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(
+        context,
+        attrs,
+        defStyle
+    ) {
         mInflater = LayoutInflater.from(context)
         init()
     }
@@ -45,19 +52,22 @@ class CustomeImageView : RelativeLayout {
         loaderImageView = v.findViewById(R.id.imageView) as ImageView
     }
 
-    fun loadImage(url: String) {
-        var bitmap=BitmapResponseCache.instance.getResponseFromCache(url)
-        if(bitmap==null){
-            RequestCall(Request(url = url, parser = bitmapParser)).getData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { bitmap: Bitmap ->
-                    BitmapResponseCache.instance.addResponseToCache(url,bitmap)
-                    loaderImageView.setImageBitmap(bitmap)
-                }
-        }else{
-            loaderImageView.setImageBitmap(bitmap)
+    suspend fun loadImage(url: String) {
 
+        var bitmap = BitmapResponseCache.instance.getResponseFromCache(url)
+        if (bitmap == null) {
+            CoroutineScope(IO).launch {
+                bitmap = RequestCall(Request(url = url, parser = bitmapParser)).getData()
+                bitmap?.let {
+                    BitmapResponseCache.instance.addResponseToCache(url, it)
+                }
+            }
+
+            withContext(Main) {
+                loaderImageView.setImageBitmap(bitmap)
+            }
+        } else {
+            loaderImageView.setImageBitmap(bitmap)
         }
     }
 }

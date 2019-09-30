@@ -12,7 +12,7 @@ import java.net.URL
  */
 
 class RequestCall<T>(private val request: Request<T>) {
-    fun getData(): Single<T> = Single.fromCallable {
+    fun getData(): T? {
         var urlConnection: HttpURLConnection? = null
         Log.d("Url", request.url)
 
@@ -35,13 +35,12 @@ class RequestCall<T>(private val request: Request<T>) {
 
             }
         } catch (e: Exception) {
-            Single.error<java.lang.Exception>(e)
-            urlConnection!!.disconnect()
+            e.printStackTrace()
+            urlConnection?.disconnect()
         } finally {
             urlConnection?.disconnect()
         }
-        data?.apply {
-            data
-        }
+
+            return data
     }
 }
