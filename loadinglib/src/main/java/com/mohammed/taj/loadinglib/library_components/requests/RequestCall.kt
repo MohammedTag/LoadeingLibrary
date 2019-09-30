@@ -1,7 +1,6 @@
 package com.mohammed.taj.loadinglib.library_components.requests
 
 import android.util.Log
-import io.reactivex.Single
 import java.net.HttpURLConnection
 import java.net.URL
 
