@@ -9,5 +9,5 @@ import com.mohammed.taj.pintristpinboard.data_layer.models.Feeds
  * Cairo, Egypt.
  */
 interface FeedsDataSource {
-    fun getUserFeed(url: String): LiveData<List<Feeds>>
+    suspend fun getUserFeed(url: String): List<Feeds>?
 }

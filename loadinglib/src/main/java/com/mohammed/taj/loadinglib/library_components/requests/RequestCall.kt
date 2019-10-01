@@ -1,6 +1,12 @@
 package com.mohammed.taj.loadinglib.library_components.requests
 
 import android.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Job
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -11,6 +17,8 @@ import java.net.URL
  */
 
 class RequestCall<T>(private val request: Request<T>) {
+
+
     fun getData(): T? {
         var urlConnection: HttpURLConnection? = null
         Log.d("Url", request.url)
@@ -43,3 +51,4 @@ class RequestCall<T>(private val request: Request<T>) {
             return data
     }
 }
+
