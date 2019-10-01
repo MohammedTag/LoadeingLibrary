@@ -1,7 +1,6 @@
 package com.mohammed.taj.pintristpinboard.data_layer
 
 import com.mohammed.taj.pintristpinboard.app.PinterestConstants
-import com.mohammed.taj.pintristpinboard.data_layer.models.Feeds
 import com.mohammed.taj.pintristpinboard.di.modules.RepositorySourceModule
 import dagger.Module
 import dagger.Provides
