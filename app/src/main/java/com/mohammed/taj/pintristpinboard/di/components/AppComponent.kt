@@ -2,6 +2,7 @@ package com.mohammed.taj.pintristpinboard.di.components
 
 import com.mohammed.taj.pintristpinboard.di.modules.RemoteDataSourceModule
 import com.mohammed.taj.pintristpinboard.di.modules.ContextModule
+import com.mohammed.taj.pintristpinboard.di.modules.RepositorySourceModule
 import com.mohammed.taj.pintristpinboard.presentaion_layer.MainActivity
 import dagger.Component
 import javax.inject.Singleton
@@ -15,7 +16,8 @@ import javax.inject.Singleton
 @Component(
     modules = [
         ContextModule::class,
-        RemoteDataSourceModule::class
+        RemoteDataSourceModule::class,
+        RepositorySourceModule::class
 
     ]
 )
