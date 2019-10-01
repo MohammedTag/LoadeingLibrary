@@ -1,5 +1,6 @@
 package com.mohammed.taj.pintristpinboard.di.components
 
+import com.mohammed.taj.pintristpinboard.data_layer.FeedsUseCaseDependenciesModule
 import com.mohammed.taj.pintristpinboard.di.modules.RemoteDataSourceModule
 import com.mohammed.taj.pintristpinboard.di.modules.ContextModule
 import com.mohammed.taj.pintristpinboard.di.modules.RepositorySourceModule
@@ -17,7 +18,8 @@ import javax.inject.Singleton
     modules = [
         ContextModule::class,
         RemoteDataSourceModule::class,
-        RepositorySourceModule::class
+        RepositorySourceModule::class,
+        FeedsUseCaseDependenciesModule::class
 
     ]
 )
