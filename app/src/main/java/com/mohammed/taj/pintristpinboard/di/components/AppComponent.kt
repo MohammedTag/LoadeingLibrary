@@ -1,5 +1,6 @@
 package com.mohammed.taj.pintristpinboard.di.components
 
+import com.mohammed.taj.pintristpinboard.di.modules.BaseParserModule
 import com.mohammed.taj.pintristpinboard.di.modules.ContextModule
 import com.mohammed.taj.pintristpinboard.di.modules.RemoteDataSourceModule
 import com.mohammed.taj.pintristpinboard.di.modules.RepositorySourceModule
@@ -22,7 +23,8 @@ import javax.inject.Singleton
         RemoteDataSourceModule::class,
         RepositorySourceModule::class,
         FeedsUseCaseDependenciesModule::class,
-        FeedsViewModelFactoryModule::class
+        FeedsViewModelFactoryModule::class,
+        BaseParserModule::class
 
     ]
 )

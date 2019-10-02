@@ -5,9 +5,6 @@ import androidx.multidex.MultiDexApplication
 import com.mohammed.taj.pintristpinboard.di.components.AppComponent
 import com.mohammed.taj.pintristpinboard.di.components.DaggerAppComponent
 import com.mohammed.taj.pintristpinboard.di.modules.ContextModule
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Job
 
 
 /**
@@ -17,7 +14,7 @@ import kotlinx.coroutines.Job
 class App: MultiDexApplication() {
 
     lateinit var context: Context
-    lateinit var compnant: AppComponent
+    lateinit var componant: AppComponent
 
     private fun initDagger(appContext: Context): AppComponent =
         DaggerAppComponent.builder()
@@ -28,7 +25,7 @@ class App: MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         context = this
-        compnant = initDagger(this.applicationContext)
+        componant = initDagger(this.applicationContext)
     }
 
 }

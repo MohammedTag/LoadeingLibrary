@@ -7,6 +7,8 @@ package com.mohammed.taj.pintristpinboard.app
  */
 object PinterestConstants {
 
+    const val BASE_URL ="http://pastebin.com/raw/wgkJgazE"
+
     object DaggerNamedValues {
         const val REMOTE_DATA_SOURCE = "RemoteDataSource"
         const val LOCAL_DATA_SOURCE = "LocalDataSource"

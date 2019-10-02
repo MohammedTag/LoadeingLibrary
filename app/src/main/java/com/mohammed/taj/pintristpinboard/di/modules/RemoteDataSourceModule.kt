@@ -1,12 +1,11 @@
 package com.mohammed.taj.pintristpinboard.di.modules
 
-import com.mohammed.taj.loadinglib.library_components.parsing.BaseParser
+import com.mohammed.taj.loadinglib.library_components.parsing.JsonArrayParser
 import com.mohammed.taj.pintristpinboard.app.PinterestConstants
 import com.mohammed.taj.pintristpinboard.data_layer.FeedsDataSource
 import com.mohammed.taj.pintristpinboard.data_layer.FeedsRemoteDataSource
 import dagger.Module
 import dagger.Provides
-import org.json.JSONArray
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -17,12 +16,12 @@ import javax.inject.Singleton
  */
 
 
-@Module
+@Module(includes = [BaseParserModule::class])
 class RemoteDataSourceModule {
 
     @Named(PinterestConstants.DaggerNamedValues.REMOTE_DATA_SOURCE)
     @Provides
     @Singleton
-    fun providesRemoteDataSource( jsonArrayParser: BaseParser<JSONArray>): FeedsDataSource =
+    fun providesRemoteDataSource( jsonArrayParser: JsonArrayParser): FeedsDataSource =
         FeedsRemoteDataSource(jsonArrayParser)
 }

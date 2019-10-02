@@ -1,6 +1,6 @@
 package com.mohammed.taj.pintristpinboard.data_layer
 
-import com.mohammed.taj.loadinglib.library_components.parsing.BaseParser
+import com.mohammed.taj.loadinglib.library_components.parsing.JsonArrayParser
 import com.mohammed.taj.loadinglib.library_components.requests.Request
 import com.mohammed.taj.loadinglib.library_components.requests.RequestCall
 import com.mohammed.taj.pintristpinboard.data_layer.models.Feeds
@@ -16,7 +16,7 @@ import org.json.JSONException
  * Cairo, Egypt.
  */
 
-class FeedsRemoteDataSource(var jsonArrayParser: BaseParser<JSONArray>) : FeedsDataSource {
+class FeedsRemoteDataSource constructor(var jsonArrayParser: JsonArrayParser) : FeedsDataSource {
     override suspend fun getUserFeed(url: String): List<Feeds>? {
 
         return withContext(IO) {
