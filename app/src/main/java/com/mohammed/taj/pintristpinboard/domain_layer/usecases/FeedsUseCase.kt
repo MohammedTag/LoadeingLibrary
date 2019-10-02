@@ -1,6 +1,7 @@
-package com.mohammed.taj.pintristpinboard.data_layer
+package com.mohammed.taj.pintristpinboard.domain_layer.usecases
 
 import com.mohammed.taj.pintristpinboard.app.PinterestConstants
+import com.mohammed.taj.pintristpinboard.data_layer.FeedsDataSource
 import com.mohammed.taj.pintristpinboard.di.modules.RepositorySourceModule
 import dagger.Module
 import dagger.Provides
@@ -14,7 +15,7 @@ import javax.inject.Singleton
  * Cairo, Egypt.
  */
 
-class FeedsUseCase @Inject constructor(private val feedsRepository: FeedsDataSource,private val requestUrl: String){
+class FeedsUseCase @Inject constructor(private val feedsRepository: FeedsDataSource, private val requestUrl: String){
 
     suspend fun run(page:String){
         feedsRepository.getUserFeed("$requestUrl/$page")
@@ -28,6 +29,10 @@ class FeedsUseCaseDependenciesModule {
     @Singleton
     fun providesFeedsUseCase(
         @Named(value = PinterestConstants.DaggerNamedValues.LOCAL_DATA_SOURCE)
-        feedsRepository:FeedsDataSource ,requestUrl: String
-    ): FeedsUseCase = FeedsUseCase(feedsRepository,requestUrl)
+        feedsRepository: FeedsDataSource, requestUrl: String
+    ): FeedsUseCase =
+        FeedsUseCase(
+            feedsRepository,
+            requestUrl
+        )
 }
