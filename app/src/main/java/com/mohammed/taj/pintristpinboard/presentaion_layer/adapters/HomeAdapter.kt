@@ -29,6 +29,11 @@ class HomeAdapter(
     }
 
     private suspend fun bind(helper: BaseViewHolder?, item: Feeds?){
+
+        /*val randomNumber = listOf(550, 650).random()
+        val currentItemViewParams =helper?.itemView?.layoutParams
+        currentItemViewParams?.height = randomNumber
+        helper?.itemView?.layoutParams = currentItemViewParams*/
         item?.userModel?.profileIamge?.let {
             helper?.getView<CustomeImageView>(R.id.userImage)?.loadImage(
                 it

@@ -86,7 +86,7 @@ class FeedsFragment : Fragment(), CoroutineScope by MainScope() {
         usersRecyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = homeFeedAdapter
-            /*addItemDecoration(SpacesItemDecoration(16))*/
+
         }
         homeFeedAdapter.apply {
             setEnableLoadMore(true)

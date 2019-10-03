@@ -4,9 +4,12 @@
     xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    app:cardCornerRadius="@dimen/dp_10"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
-    card_view:cardCornerRadius="8dp"
+    card_view:cardCornerRadius="12dp"
     card_view:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +23,7 @@
         <com.mohammed.taj.loadinglib.custome_views.CustomeImageView
             android:id="@+id/userImage"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="250dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,14 +34,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/userImage"
-            android:background="#1976D2"
+            android:background="@android:color/transparent"
             android:gravity="center_horizontal"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/black"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/userImage" />
+            app:layout_constraintTop_toBottomOf="@id/userImage"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
