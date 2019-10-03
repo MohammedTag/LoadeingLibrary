@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.container, FeedsFragment.newInstance())
             .commitNow()
 
+
     }
 
 

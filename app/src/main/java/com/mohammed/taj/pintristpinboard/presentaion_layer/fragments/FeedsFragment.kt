@@ -13,39 +13,76 @@ import com.mohammed.taj.pintristpinboard.R
 import com.mohammed.taj.pintristpinboard.app.App
 import com.mohammed.taj.pintristpinboard.presentaion_layer.adapters.HomeAdapter
 import kotlinx.android.synthetic.main.fragment_feeds.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 /**
  * A simple [Fragment] subclass.
  */
-class FeedsFragment : Fragment(),CoroutineScope {
+class FeedsFragment : Fragment(), CoroutineScope by MainScope() {
 
     @Inject
     lateinit var feedsViewModelFactory: FeedsViewModelFactory
     private lateinit var feedsViewModel: FeedsViewModel
 
     private var homeFeedAdapter = HomeAdapter(mutableListOf())
-    lateinit var masterJob: Job
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        masterJob = Job()
+
         return inflater.inflate(R.layout.fragment_feeds, container, false)
 
 
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity?.application as App).componant.inject(this)
+
+        feedsViewModel =
+            ViewModelProviders.of(this, feedsViewModelFactory).get(FeedsViewModel::class.java)
+
+        launch {
+            feedsViewModel.getFeed()
+        }
+
+        observeHomeFeedData()
+        subscribeLoadMoreConversationMessagesSuccess()
+
+    }
+
+    private fun observeHomeFeedData() {
+        feedsViewModel.homeFeedItemObservable.observe(this, Observer {
+            homeFeedAdapter.setNewData(it)
+        })
+    }
+
+    private fun subscribeLoadMoreConversationMessagesSuccess() {
+        feedsViewModel.loadMoreHomeFeedItemObservable.observe(this, Observer {
+            it?.let {
+                loadMoreConversationSuccess()
+            }
+        })
+    }
+
+    private fun loadMoreConversationSuccess() {
+        homeFeedAdapter.notifyDataSetChanged()
+        homeFeedAdapter.loadMoreComplete()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity?.application as App).componant.inject(this)
 
-        feedsViewModel = ViewModelProviders.of(this, feedsViewModelFactory).get(FeedsViewModel::class.java)
+        feedsViewModel =
+            ViewModelProviders.of(this, feedsViewModelFactory).get(FeedsViewModel::class.java)
         usersRecyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = homeFeedAdapter
@@ -54,36 +91,31 @@ class FeedsFragment : Fragment(),CoroutineScope {
         homeFeedAdapter.apply {
             setEnableLoadMore(true)
             setOnLoadMoreListener({
-                CoroutineScope(IO).launch{
-                    loadFeeds()
-                }
-
+                loadFeeds()
             }, usersRecyclerView)
-        }
-
-    }
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + masterJob
-
-    fun CoroutineScope.loadFeeds(){
-        //show Loading
-        this.launch {
-            val data = withContext(IO){
-                feedsViewModel.getFeed()
-            }
-            feedsViewModel.homeFeedItemObservable.observe(this@FeedsFragment, Observer {
-                homeFeedAdapter.addData(it)
-            })
-            homeFeedAdapter.notifyDataSetChanged()
         }
 
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        masterJob = Job()
+        cancel()
     }
+
+    fun loadFeeds() {
+        //show Loading
+
+        launch {
+            feedsViewModel.getFeed()
+        }
+
+        feedsViewModel.homeFeedItemObservable.observe(this@FeedsFragment, Observer {
+            homeFeedAdapter.addData(it)
+        })
+        homeFeedAdapter.notifyDataSetChanged()
+        homeFeedAdapter.loadMoreComplete()
+    }
+
 
     companion object {
         fun newInstance() = FeedsFragment()

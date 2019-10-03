@@ -3,9 +3,11 @@ package com.mohammed.taj.pintristpinboard.data_layer
 import com.mohammed.taj.loadinglib.library_components.parsing.JsonArrayParser
 import com.mohammed.taj.loadinglib.library_components.requests.Request
 import com.mohammed.taj.loadinglib.library_components.requests.RequestCall
+import com.mohammed.taj.pintristpinboard.app.PinterestConstants
 import com.mohammed.taj.pintristpinboard.data_layer.models.Feeds
 import com.mohammed.taj.pintristpinboard.data_layer.models.UserBean
-import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONException
@@ -17,26 +19,33 @@ import org.json.JSONException
  */
 
 class FeedsRemoteDataSource constructor(var jsonArrayParser: JsonArrayParser) : FeedsDataSource {
-    override suspend fun getUserFeed(url: String): List<Feeds>? {
-
-        return withContext(IO) {
-            RequestCall(
-                Request(
-                    method = Request.GET,
-                    url = url,
-                    parser = jsonArrayParser
-                )
-            ).getData()
-                ?.let { parseJsonArray(it) }
-        }
-
-
+    override  suspend fun getUserFeed(url: String): List<Feeds>? {
+       return networkCallHelper(url)
     }
 
-    private suspend fun parseJsonArray(data: JSONArray): List<Feeds> {
+    private suspend fun networkCallHelper(url: String): List<Feeds>? {
+        return withContext(Dispatchers.Default) {
+            val data =  async {
+                RequestCall(
+                    Request(
+                        method = Request.GET,
+                        url = PinterestConstants.BASE_URL+"/"+url,
+                        parser = jsonArrayParser
+                    )
+                ).getData()
+
+            }
+
+
+
+            return@withContext data.await()?.let { parseJsonArray(it) }
+        }
+    }
+
+    private fun parseJsonArray(data: JSONArray): List<Feeds> {
         val feedModels = mutableListOf<Feeds>()
 
-        withContext(IO) {
+
             var i = 0
             while (i < data.length()) {
                 try {
@@ -64,7 +73,7 @@ class FeedsRemoteDataSource constructor(var jsonArrayParser: JsonArrayParser) : 
 
                 i++
             }
-        }
+
 
         return feedModels
     }
