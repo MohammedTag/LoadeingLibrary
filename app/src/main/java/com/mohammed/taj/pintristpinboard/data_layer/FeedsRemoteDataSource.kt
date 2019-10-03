@@ -54,7 +54,7 @@ class FeedsRemoteDataSource constructor(var jsonArrayParser: JsonArrayParser) : 
                     val userModel = UserBean(
                         id = userJsonObject.getString("id"),
                         userName = userJsonObject.getString("username"),
-                        profileIamge = userJsonObject.getJSONObject("profile_image").getString("large")
+                        profileImage = userJsonObject.getJSONObject("profile_image").getString("large")
                     )
                     val feedModel = Feeds(
                         id = jsonObject.getString("id"),

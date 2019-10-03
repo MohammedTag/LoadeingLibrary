@@ -9,12 +9,12 @@ package com.mohammed.taj.pintristpinboard.data_layer.models
 data class UserBean(
     var id: String,
     var userName: String,
-    var profileIamge: String)
+    var profileImage: String)
 {
     class TestBuilder {
         companion object {
             fun buildUserModel() =
-                UserBean(id="12",userName = "TestUser",profileIamge = "random Image")
+                UserBean(id="12",userName = "TestUser",profileImage = "random Image")
 
             fun buildList() =
                 listOf(buildUserModel())

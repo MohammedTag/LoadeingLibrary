@@ -20,15 +20,15 @@ class FeedsViewModel (private val feedsUseCase: FeedsUseCase):ViewModel(){
     var page = 0
     val homeFeedItemList= mutableListOf<Feeds>()
 
-    val homeFeedItemObservable = MutableLiveData<List<Feeds>>()
-    val loadMoreHomeFeedItemObservable = MutableLiveData<Boolean>()
+    val homeFeedList = MutableLiveData<List<Feeds>>()
+    val loadMoreFeedFlag = MutableLiveData<Boolean>()
 
       suspend fun getFeed(){
         page+=1
         feedsUseCase.getUserFeed(page.toString())?.let { homeFeedItemList.addAll(it) }
         if (page==1){
-            homeFeedItemObservable.postValue(homeFeedItemList)}else{
-            loadMoreHomeFeedItemObservable.postValue(true)
+            homeFeedList.postValue(homeFeedItemList)}else{
+            loadMoreFeedFlag.postValue(true)
         }
     }
 }

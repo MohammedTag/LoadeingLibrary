@@ -54,25 +54,25 @@ class FeedsFragment : Fragment(), CoroutineScope by MainScope() {
         }
 
         observeHomeFeedData()
-        subscribeLoadMoreConversationMessagesSuccess()
+        notifyAdapter()
 
     }
 
     private fun observeHomeFeedData() {
-        feedsViewModel.homeFeedItemObservable.observe(this, Observer {
+        feedsViewModel.homeFeedList.observe(this, Observer {
             homeFeedAdapter.setNewData(it)
         })
     }
 
-    private fun subscribeLoadMoreConversationMessagesSuccess() {
-        feedsViewModel.loadMoreHomeFeedItemObservable.observe(this, Observer {
+    private fun notifyAdapter() {
+        feedsViewModel.loadMoreFeedFlag.observe(this, Observer {
             it?.let {
-                loadMoreConversationSuccess()
+                loadMoreSuccess()
             }
         })
     }
 
-    private fun loadMoreConversationSuccess() {
+    private fun loadMoreSuccess() {
         homeFeedAdapter.notifyDataSetChanged()
         homeFeedAdapter.loadMoreComplete()
     }
@@ -103,13 +103,11 @@ class FeedsFragment : Fragment(), CoroutineScope by MainScope() {
     }
 
     fun loadFeeds() {
-        //show Loading
 
         launch {
             feedsViewModel.getFeed()
         }
-
-        feedsViewModel.homeFeedItemObservable.observe(this@FeedsFragment, Observer {
+        feedsViewModel.homeFeedList.observe(this@FeedsFragment, Observer {
             homeFeedAdapter.addData(it)
         })
         homeFeedAdapter.notifyDataSetChanged()
