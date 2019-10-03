@@ -34,7 +34,7 @@ class HomeAdapter(
         val currentItemViewParams =helper?.itemView?.layoutParams
         currentItemViewParams?.height = randomNumber
         helper?.itemView?.layoutParams = currentItemViewParams*/
-        item?.userModel?.profileIamge?.let {
+        item?.userModel?.profileImage?.let {
             helper?.getView<CustomeImageView>(R.id.userImage)?.loadImage(
                 it
             )
