@@ -19,17 +19,17 @@ import org.json.JSONException
  */
 
 class FeedsRemoteDataSource constructor(var jsonArrayParser: JsonArrayParser) : FeedsDataSource {
-    override  suspend fun getUserFeed(url: String): List<Feeds>? {
-       return networkCallHelper(url)
+    override  suspend fun getUserFeed(page: String): List<Feeds>? {
+       return networkCallHelper(page)
     }
 
-    private suspend fun networkCallHelper(url: String): List<Feeds>? {
+    private suspend fun networkCallHelper(page: String): List<Feeds>? {
         return withContext(Dispatchers.Default) {
             val data =  async {
                 RequestCall(
                     Request(
                         method = Request.GET,
-                        url = PinterestConstants.BASE_URL+"/"+url,
+                        url = PinterestConstants.BASE_URL+"/"+page,
                         parser = jsonArrayParser
                     )
                 ).getData()
@@ -65,7 +65,6 @@ class FeedsRemoteDataSource constructor(var jsonArrayParser: JsonArrayParser) : 
                         liked_by_user = jsonObject.getBoolean("liked_by_user"),
                         userModel = userModel
                     )
-
                     feedModels.add(feedModel)
                 } catch (e: JSONException) {
                     e.printStackTrace()

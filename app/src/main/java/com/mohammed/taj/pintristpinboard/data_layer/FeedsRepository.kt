@@ -9,8 +9,8 @@ import com.mohammed.taj.pintristpinboard.data_layer.models.Feeds
  */
 
 class FeedsRepository (private val remoteHomeFeedDataSource: FeedsDataSource): FeedsDataSource{
-    override suspend fun getUserFeed(url: String): List<Feeds>? {
-        return remoteHomeFeedDataSource.getUserFeed(url)
+    override suspend fun getUserFeed(page: String): List<Feeds>? {
+        return remoteHomeFeedDataSource.getUserFeed(page)
     }
 
 }

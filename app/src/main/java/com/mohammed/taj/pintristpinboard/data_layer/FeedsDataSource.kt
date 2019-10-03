@@ -1,6 +1,5 @@
 package com.mohammed.taj.pintristpinboard.data_layer
 
-import androidx.lifecycle.LiveData
 import com.mohammed.taj.pintristpinboard.data_layer.models.Feeds
 
 
@@ -9,5 +8,5 @@ import com.mohammed.taj.pintristpinboard.data_layer.models.Feeds
  * Cairo, Egypt.
  */
 interface FeedsDataSource {
-    suspend fun getUserFeed(url: String): List<Feeds>?
+    suspend fun getUserFeed(page: String): List<Feeds>?
 }

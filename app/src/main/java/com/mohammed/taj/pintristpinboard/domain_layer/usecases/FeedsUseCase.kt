@@ -17,8 +17,8 @@ import javax.inject.Singleton
  */
 
 class FeedsUseCase @Inject constructor(private val feedsRepository: FeedsDataSource):FeedsDataSource{
-    override suspend fun getUserFeed(url: String): List<Feeds>? {
-       return feedsRepository.getUserFeed(url)
+    override suspend fun getUserFeed(page: String): List<Feeds>? {
+       return feedsRepository.getUserFeed(page)
     }
 
 }
